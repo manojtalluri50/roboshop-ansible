@@ -25,7 +25,7 @@
     state: restarted
     enabled: true
 
-- name: Open MongoDB port in firewalld
+- name: Open MongoDB port 27017
   ansible.posix.firewalld:
     port: 27017/tcp
     permanent: true
