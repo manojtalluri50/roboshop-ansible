@@ -1,0 +1,57 @@
+#dnf module disable nginx -y
+#dnf module enable nginx:1.24 -y
+#
+#dnf install nginx -y
+#cp nginx.conf /etc/nginx/nginx.conf
+#
+#rm -rf /usr/share/nginx/html/*
+#
+#rm -rf /tmp/frontend.zip
+#
+#curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+#
+#cd /usr/share/nginx/html
+#unzip /tmp/frontend.zip
+#
+#systemctl enable nginx
+#systemctl start nginx
+#systemctl restart nginx
+
+- name: Disable nginx default version
+  ansible.builtin.shell: dnf module disable nginx -y
+
+- name: Enable nginx 1.24 version
+  ansible.builtin.shell: dnf module enable nginx:1.24 -y
+
+- name: Install nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: installed
+
+- name: Copy nginx config file
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Remove the nginx directory
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/
+    state: absent
+
+- name: Create the nginx directory
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/
+    state: directory
+
+- name: Download the extract the frontend code
+  ansible.builtin.unarchive:
+    src: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+    dest: /usr/share/nginx/html
+    remote_src: yes
+
+- name: Start the nginx service
+  ansible.builtin.systemd_service:
+    state: restarted
+    name: nginx
+    enabled: true
+
