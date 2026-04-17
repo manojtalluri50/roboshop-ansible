@@ -1,3 +1,26 @@
-- name: Hello
-  ansible.builtin.debug:
-    msg: "Hello world"
+- name: Disable Default NodeJS Version
+  ansible.builtin.shell: dnf module disable nodejs -y
+
+- name: Enable NodeJS 20 Version
+  ansible.builtin.shell: dnf module enable nodejs:20 -y &>>$log_file
+
+- name: Install NodeJS
+  ansible.builtin.dnf:
+    name: nodejs
+    state: installed
+
+- name: Import App Prerequisites
+  ansible.builtin.include_tasks:
+    file: app-prereq.yaml
+
+- name: Install NodeJS Dependencies
+  community.general.npm:
+    path: /app/location
+
+- name: Import the SystemD setup
+  ansible.builtin.include_tasks:
+    file: systemd.yaml
+
+
+
+

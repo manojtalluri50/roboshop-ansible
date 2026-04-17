@@ -1,4 +1,41 @@
-- name: Run tasks/other.yaml instead of 'main'
+#  source ./common.sh
+#    app_name=catalogue
+#
+#    echo Copy Mongodb Repo File
+#    cp mongo.repo /etc/yum.repos.d/mongo.repo
+#    Status_Print $?
+#
+#    NODEJS
+#
+#    echo Install Mongo Client
+#    dnf install mongodb-mongosh -y
+#    Status_Print $?
+#
+#    echo Load Master Data
+#    mongosh --host mongodb-dev.azdevopsb82.online </app/db/master-data.js
+#    Status_Print $?
+
+
+- name: Import NodeJS Common Role
   ansible.builtin.include_role:
     name: common
     tasks_from: nodejs
+
+- name: Copy Mongodb Repo File
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: Install Mongo Client
+  ansible.builtin.dnf:
+    name: mongodb-mongosh
+    state: installed
+
+- name: Load Master Data
+  community.mongodb.mongodb_shell:
+    login_host: mongodb-dev.azdevopsb82.online
+    file: "/app/db/master-data.js"
+    idempotent: yes
+
+
+
