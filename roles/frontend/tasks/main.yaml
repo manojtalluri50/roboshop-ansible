@@ -35,6 +35,7 @@
     state: restarted
     name: nginx
     enabled: true
+    remote_src: yes
 
 - name: Allow HTTP in firewall
   ansible.builtin.firewalld:
