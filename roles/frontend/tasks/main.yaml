@@ -30,11 +30,12 @@
     dest: /usr/share/nginx/html
     remote_src: yes
 
-- name: Start the nginx service
-  ansible.builtin.systemd_service:
-    state: restarted
+- name: Start nginx
+  ansible.builtin.systemd:
     name: nginx
-    enabled: true
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
 
 - name: Allow HTTP in firewall
   ansible.builtin.firewalld:
