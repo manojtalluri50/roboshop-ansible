@@ -1,0 +1,33 @@
+#sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+#
+#systemctl enable mongod
+#systemctl restart mongod
+
+- name: Copy MongoDB repo file
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: Install MongoDB
+  ansible.builtin.dnf:
+    name: mongodb-org
+    state: installed
+
+- name: Update Listen Address
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: Start the MongoDB Service
+  ansible.builtin.systemd_service:
+    name: mongod
+    state: restarted
+    enabled: true
+
+- name: Open MongoDB port in firewalld
+  ansible.posix.firewalld:
+    port: 27017/tcp
+    permanent: true
+    state: enabled
+    immediate: true
