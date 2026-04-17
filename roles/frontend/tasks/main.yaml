@@ -24,7 +24,7 @@
     path: /usr/share/nginx/html/
     state: directory
 
-- name: Download the extract the frontend code
+- name: Download and extract frontend code
   ansible.builtin.unarchive:
     src: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
     dest: /usr/share/nginx/html
@@ -35,7 +35,6 @@
     name: nginx
     state: restarted
     enabled: yes
-    daemon_reload: yes
 
 - name: Allow HTTP in firewall
   ansible.builtin.firewalld:
