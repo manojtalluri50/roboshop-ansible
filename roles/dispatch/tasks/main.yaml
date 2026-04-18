@@ -41,6 +41,14 @@
 - name: Start dispatch service
   ansible.builtin.systemd_service:
     name: dispatch
-    state: started
+    state: restarted
     enabled: yes
     daemon_reload: true
+
+- name: Check dispatch service status
+  ansible.builtin.command: systemctl status dispatch
+  register: service_status
+
+- name: Print status
+  ansible.builtin.debug:
+    var: service_status.stdout
