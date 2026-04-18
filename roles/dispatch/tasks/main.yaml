@@ -1,7 +1,7 @@
 - name: Copy the Dispatch Service File
   ansible.builtin.copy:
-    src: {{ app_name }}.service
-    dest: /etc/systemd/system/{{ app_name }}.service
+    src: "{{ app_name }}.service"
+    dest: "/etc/systemd/system/{{ app_name }}.service"
 
 - name: Install Golang
   ansible.builtin.dnf:
@@ -19,10 +19,17 @@
     remote_src: yes
 
 - name: Initialize Go module
-  ansible.builtin.command:
-    - go mod init dispatch
-    - go get
-    - go build
+  ansible.builtin.command: go mod init {{ app_name }}
+  args:
+    chdir: /app
+
+- name: Download dependencies
+  ansible.builtin.command: go get
+  args:
+    chdir: /app
+
+- name: Build application
+  ansible.builtin.command: go build
   args:
     chdir: /app
 
