@@ -27,7 +27,7 @@
   ansible.builtin.command: go mod init {{ app_name }}
   args:
     chdir: /app
-  when: not lookup('ansible.builtin.file', '/app/go.mod', errors='ignore')
+  ignore_errors: true
 
 - name: Download dependencies
   ansible.builtin.command: go get
