@@ -1,0 +1,12 @@
+#source ./common.sh
+#app_name=payment
+#
+#PYTHON
+#
+
+
+- name: Import NodeJS Common Role
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: python
+
