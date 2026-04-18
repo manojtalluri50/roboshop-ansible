@@ -21,7 +21,7 @@
   register: output
 
 - name: Debug the output
-  debug:
+  ansible.builtin.debug:
     var: output
 
 - name: Open port 8080 on catalogue server
