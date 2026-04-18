@@ -1,15 +1,3 @@
-#source ./common.sh
-#app_name=shipping
-#
-#JAVA
-#
-#dnf install mysql -y
-#
-#mysql -h mysql-dev.azdevopsb82.online -uroot -pRoboShop@1 < /app/db/schema.sql
-#mysql -h mysql-dev.azdevopsb82.online -uroot -pRoboShop@1 < /app/db/app-user.sql
-#mysql -h mysql-dev.azdevopsb82.online -uroot -pRoboShop@1 < /app/db/master-data.sql
-##
-
 - name: Import NodeJS Common Role
   ansible.builtin.include_role:
     name: common
@@ -17,7 +5,9 @@
 
 - name: Install MySQL Client
   ansible.builtin.dnf:
-    name: mysql
+    name:
+      - mysql
+      - python3-mysqlclient
     state: installed
 
 - name: Load Schema
