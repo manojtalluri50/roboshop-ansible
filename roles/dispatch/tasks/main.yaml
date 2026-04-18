@@ -23,19 +23,6 @@
     dest: /app
     remote_src: yes
 
-- name: Give execute permission to dispatch binary
-  ansible.builtin.file:
-    path: /app/dispatch
-    mode: '0755'
-
-- name: Set ownership
-  ansible.builtin.file:
-    path: /app
-    state: directory
-    recurse: yes
-    owner: roboshop
-    group: roboshop
-
 - name: Initialize Go module
   ansible.builtin.command: go mod init {{ app_name }}
   args:
