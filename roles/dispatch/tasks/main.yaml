@@ -24,9 +24,10 @@
     remote_src: yes
 
 - name: Initialize Go module
-  ansible.builtin.command: "go mod init {{ app_name }}"
+  ansible.builtin.command: go mod init {{ app_name }}
   args:
     chdir: /app
+  when: not lookup('ansible.builtin.file', '/app/go.mod', errors='ignore')
 
 - name: Download dependencies
   ansible.builtin.command: go get
