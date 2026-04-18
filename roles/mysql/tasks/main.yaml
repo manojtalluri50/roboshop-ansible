@@ -9,31 +9,28 @@
     state: started
     enabled: true
 
-- name: Set root password
+- name: Set root password (initial)
   ansible.builtin.command: >
-    mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
+    mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
   ignore_errors: true
 
-- name: Remove anonymous users
+- name: Secure MySQL - remove anonymous users
   ansible.builtin.command: >
-    mysql -e "DELETE FROM mysql.user WHERE User='';"
-  ignore_errors: true
+    mysql -uroot -pRoboShop@1 -e "DELETE FROM mysql.user WHERE User='';"
 
-- name: Disallow root login remotely
+- name: Secure MySQL - disallow root remote login
   ansible.builtin.command: >
-    mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host!='localhost';"
-  ignore_errors: true
+    mysql -uroot -pRoboShop@1 -e "DELETE FROM mysql.user WHERE User='root' AND Host!='localhost';"
 
-- name: Remove test database
+- name: Remove test DB
   ansible.builtin.command: >
-    mysql -e "DROP DATABASE IF EXISTS test;"
-  ignore_errors: true
+    mysql -uroot -pRoboShop@1 -e "DROP DATABASE IF EXISTS test;"
 
-- name: Reload privilege tables
+- name: Flush privileges
   ansible.builtin.command: >
-    mysql -e "FLUSH PRIVILEGES;"
+    mysql -uroot -pRoboShop@1 -e "FLUSH PRIVILEGES;"
 
-- name: Open MySQL port 3306
+- name: Open MySQL port
   ansible.posix.firewalld:
     port: 3306/tcp
     permanent: yes
