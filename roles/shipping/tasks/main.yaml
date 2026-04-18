@@ -38,5 +38,14 @@
     login_user: root
     login_password: RoboShop@1
 
+- name: Open port 8080 in firewall
+  ansible.posix.firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+    immediate: yes
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload
 
 
