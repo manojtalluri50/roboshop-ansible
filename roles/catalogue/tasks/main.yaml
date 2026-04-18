@@ -18,11 +18,6 @@
     login_host: mongodb-dev.azdevopsb82.online
     file: "/app/db/master-data.js"
     idempotent: yes
-  register: output
-
-- name: Debug the output
-  ansible.builtin.debug:
-    var: output
 
 - name: Open port 8080 on catalogue server
   ansible.builtin.firewalld:
