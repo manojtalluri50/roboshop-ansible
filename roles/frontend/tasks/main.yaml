@@ -42,3 +42,6 @@
       permanent: true
       state: enabled
       immediate: yes
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload

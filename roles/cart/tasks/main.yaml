@@ -3,9 +3,12 @@
     name: common
     tasks_from: nodejs
 
-- name: Open port 8080 on catalogue server
+- name: Open port 8080
   ansible.builtin.firewalld:
     port: 8080/tcp
     permanent: true
     state: enabled
     immediate: yes
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload
