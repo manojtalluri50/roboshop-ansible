@@ -33,3 +33,13 @@
     read_priv: .*
     write_priv: .*
     state: present
+
+- name: Open RabbitMQ port
+  ansible.posix.firewalld:
+    port: 5672/tcp
+    permanent: true
+    state: enabled
+    immediate: yes
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload

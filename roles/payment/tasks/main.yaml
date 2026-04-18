@@ -3,3 +3,12 @@
     name: common
     tasks_from: python
 
+- name: Open port 8080
+  ansible.posix.firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload
+
