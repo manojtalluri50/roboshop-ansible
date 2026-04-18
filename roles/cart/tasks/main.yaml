@@ -1,0 +1,11 @@
+- name: Import NodeJS Common Role
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: nodejs
+
+- name: Open port 8080 on catalogue server
+  ansible.builtin.firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: enabled
+    immediate: yes
