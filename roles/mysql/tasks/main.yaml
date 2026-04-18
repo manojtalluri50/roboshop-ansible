@@ -1,57 +1,23 @@
 - name: Install MySQL Server
   ansible.builtin.dnf:
     name: mysql-server
-    state: present
+    state: installed
 
 - name: Start MySQL Service
-  ansible.builtin.systemd:
+  ansible.builtin.systemd_service:
     name: mysqld
-    state: started
+    state: restarted
     enabled: true
 
-# -----------------------------
-# Set root password safely (FIRST TIME)
-# Uses socket authentication (NO password needed)
-# -----------------------------
-- name: Set root password
-  ansible.builtin.command: >
-    sudo mysql -e "ALTER USER 'root'@'localhost'
-    IDENTIFIED WITH mysql_native_password BY 'RoboShop@1';"
-  register: mysql_root
-  failed_when: mysql_root.rc not in [0,1]
+- name: Set MySQL Password
+  ansible.builtin.shell: mysql_secure_installation --set-root-pass RoboShop@1
 
-# -----------------------------
-# Secure MySQL (all commands use password now)
-# -----------------------------
-- name: Remove anonymous users
-  ansible.builtin.command: >
-    mysql -uroot -pRoboShop@1
-    -e "DELETE FROM mysql.user WHERE User='';"
-  ignore_errors: true
-
-- name: Disallow root remote login
-  ansible.builtin.command: >
-    mysql -uroot -pRoboShop@1
-    -e "DELETE FROM mysql.user WHERE User='root' AND Host!='localhost';"
-  ignore_errors: true
-
-- name: Remove test database
-  ansible.builtin.command: >
-    mysql -uroot -pRoboShop@1
-    -e "DROP DATABASE IF EXISTS test;"
-  ignore_errors: true
-
-- name: Reload privileges
-  ansible.builtin.command: >
-    mysql -uroot -pRoboShop@1
-    -e "FLUSH PRIVILEGES;"
-
-# -----------------------------
-# Firewall configuration
-# -----------------------------
 - name: Open MySQL port 3306
   ansible.posix.firewalld:
     port: 3306/tcp
     permanent: yes
     state: enabled
     immediate: yes
+
+- name: Reload firewalld
+  ansible.builtin.command: firewall-cmd --reload
