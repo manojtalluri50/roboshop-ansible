@@ -1,6 +1,5 @@
 - name: Roboshop Project Setup
-  hosts: localhost
-  connection: local
+  hosts: all
   become: true
   roles:
     - "{{ app_name }}"
