@@ -22,7 +22,6 @@
 #      - schema
 #      - app-user
 #      - master-data
-
 - name: Load Schema
   ansible.builtin.shell: mysql -h mysql-{{ ENV }}.azdevopsb82.online -uroot -pRoboShop@1 </app/db/{{ item }}.sql
   loop:
