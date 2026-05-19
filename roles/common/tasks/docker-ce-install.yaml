@@ -13,16 +13,3 @@
     name: docker
     state: restarted
 
-- name: Ensure docker group exists
-  ansible.builtin.group:
-    name: docker
-    state: present
-
-- name: Add current user to docker group
-  ansible.builtin.user:
-    name: "{{ ansible_user | default('root') }}"
-    groups: docker
-    append: yes
-
-- name: Reset SSH connection to apply new group membership
-  ansible.builtin.meta: reset_connection
