@@ -8,6 +8,11 @@
     name: docker-ce
     state: installed
 
+- name: Install Python Docker SDK
+  ansible.builtin.pip:
+    name: docker
+    executable: pip3
+
 - name: Start Docker
   ansible.builtin.systemd_service:
     name: docker
