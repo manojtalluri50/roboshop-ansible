@@ -4,6 +4,7 @@
     tasks_from: docker-ce-install
 
 - name: Start App container
+  become: true
   community.docker.docker_container:
     name: frontend
     image: public.ecr.aws/w8x4g9h7/roboshop-v3/frontend
