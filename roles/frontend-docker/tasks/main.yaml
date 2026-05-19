@@ -5,8 +5,6 @@
 
 - name: Start App container
   become: true
-  environment:
-    DOCKER_HOST: unix:///var/run/docker.sock
   community.docker.docker_container:
     name: frontend
     image: public.ecr.aws/w8x4g9h7/roboshop-v3/frontend
