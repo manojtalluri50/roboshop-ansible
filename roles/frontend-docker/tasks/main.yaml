@@ -3,6 +3,14 @@
     name: common
     tasks_from: docker-ce-install
 
+- name: Debug docker host
+  shell: env | grep DOCKER
+  register: docker_env
+  ignore_errors: yes
+
+- debug:
+    var: docker_env.stdout_lines
+
 - name: Start App container
   become: true
   community.docker.docker_container:
