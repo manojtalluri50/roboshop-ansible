@@ -14,8 +14,9 @@
     name:
       - docker==6.1.3
       - requests
-      - requests-unixs
-  
+      - requests-unixsocket
+    executable: pip3
+
 - name: Start Docker
   ansible.builtin.systemd_service:
     name: docker
