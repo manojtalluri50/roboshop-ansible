@@ -9,7 +9,6 @@
     image: public.ecr.aws/w8x4g9h7/roboshop-v3/frontend
     ports:
       - "80:80"
-    docker_host: unix:///var/run/docker.sock
     env:
       CATALOGUE_HOST: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-{{ ENV }}/frontend:CATALOGUE_HOST token={{ vault_token }} url=http://vault-internal.azdevopsb82.online:8200') }}"
       CATALOGUE_PORT: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=roboshop-{{ ENV }}/frontend:CATALOGUE_PORT token={{ vault_token }} url=http://vault-internal.azdevopsb82.online:8200') }}"
